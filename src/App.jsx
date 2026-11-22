@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dock from './components/Dock';
-import HomeView from './components/HomeView';
-import ProfileBEI from './components/ProfileBEI';
-import RangkaianKegiatan from './components/RangkaianKegiatan';
-import GaleriFoto from './components/GaleriFoto';
-import VideoVlog from './components/VideoVlog';
-import KesimpulanRefleksi from './components/KesimpulanRefleksi';
+import Beranda from './components/pages/Beranda';
+import Materi from './components/pages/Materi';
+import Rangkaian from './components/pages/Rangkaian';
+import Galeri from './components/pages/Galeri';
+import Vlog from './components/pages/Vlog';
+import Kesimpulan from './components/pages/Kesimpulan';
+import Kuis from './components/pages/Kuis';
 import idxLogo from './assets/logo.svg';
 import {
   HomeIcon,
@@ -13,15 +14,33 @@ import {
   CalendarIcon,
   ImageIcon,
   VideoIcon,
-  FileTextIcon
+  FileTextIcon,
+  PencilIcon
 } from './components/Icons';
 import './App.css';
 
+const VALID_PAGES = ['beranda', 'materi', 'rangkaian', 'galeri', 'vlog', 'kesimpulan', 'kuis'];
+
+function getPageFromPath() {
+  const segment = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+  return VALID_PAGES.includes(segment) ? segment : 'beranda';
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(getPageFromPath);
+
+  useEffect(() => {
+    const onPopState = () => setCurrentPage(getPageFromPath());
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   const navigateTo = (pageId) => {
     setCurrentPage(pageId);
+    const targetPath = pageId === 'beranda' ? '/' : `/${pageId}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -29,31 +48,31 @@ function App() {
     {
       icon: <HomeIcon size={16} />,
       label: 'Beranda',
-      active: currentPage === 'home',
-      onClick: () => navigateTo('home'),
+      active: currentPage === 'beranda',
+      onClick: () => navigateTo('beranda'),
       menu: [
-        { label: 'Buka Beranda', onClick: () => navigateTo('home') },
+        { label: 'Buka Beranda', onClick: () => navigateTo('beranda') },
         { separator: true },
-        { label: 'Data Peneliti Siswa', onClick: () => navigateTo('home') }
+        { label: 'Data Peneliti Siswa', onClick: () => navigateTo('beranda') }
       ]
     },
     {
       icon: <BuildingIcon size={16} />,
-      label: 'Profil',
-      active: currentPage === 'profil',
-      onClick: () => navigateTo('profil'),
+      label: 'Materi',
+      active: currentPage === 'materi',
+      onClick: () => navigateTo('materi'),
       menu: [
-        { label: 'Struktur Kelembagaan SRO', onClick: () => navigateTo('profil') },
-        { label: 'Sejarah Pasar Modal (1912 - Kini)', onClick: () => navigateTo('profil') }
+        { label: 'Struktur Kelembagaan SRO', onClick: () => navigateTo('materi') },
+        { label: 'Sejarah Pasar Modal (1912 - Kini)', onClick: () => navigateTo('materi') }
       ]
     },
     {
       icon: <CalendarIcon size={16} />,
       label: 'Rangkaian',
-      active: currentPage === 'kegiatan',
-      onClick: () => navigateTo('kegiatan'),
+      active: currentPage === 'rangkaian',
+      onClick: () => navigateTo('rangkaian'),
       menu: [
-        { label: 'Jadwal 6 Sesi Observasi', onClick: () => navigateTo('kegiatan') }
+        { label: 'Jadwal Kunjungan Industri', onClick: () => navigateTo('rangkaian') }
       ]
     },
     {
@@ -71,30 +90,39 @@ function App() {
       active: currentPage === 'vlog',
       onClick: () => navigateTo('vlog'),
       menu: [
-        { label: 'Putar Video Kunjungan (01:30)', onClick: () => navigateTo('vlog') }
+        { label: 'Buka Vlog', onClick: () => navigateTo('vlog') }
       ]
     },
     {
       icon: <FileTextIcon size={16} />,
-      label: 'Refleksi',
-      active: currentPage === 'refleksi',
-      onClick: () => navigateTo('refleksi'),
+      label: 'Kesimpulan',
+      active: currentPage === 'kesimpulan',
+      onClick: () => navigateTo('kesimpulan'),
       menu: [
-        { label: 'Lembar Refleksi Siswa', onClick: () => navigateTo('refleksi') },
-        { label: 'Kuis Evaluasi 5 Soal', onClick: () => navigateTo('refleksi') }
+        { label: 'Rangkuman Materi Kunjungan', onClick: () => navigateTo('kesimpulan') }
+      ]
+    },
+    {
+      icon: <PencilIcon size={16} />,
+      label: 'Kuis',
+      active: currentPage === 'kuis',
+      onClick: () => navigateTo('kuis'),
+      menu: [
+        { label: 'Kuis Evaluasi 5 Soal', onClick: () => navigateTo('kuis') }
       ]
     }
   ];
 
   return (
-    <div className={`app-root has-top-dock${currentPage === 'home' ? ' is-home-page' : ''}`}>
+    <div className={`app-root has-top-dock${currentPage === 'beranda' ? ' is-home-page' : ''}${currentPage === 'rangkaian' ? ' is-rangkaian-page' : ''}${currentPage === 'galeri' ? ' is-galeri-page' : ''}`}>
       <main className="main-content">
-        {currentPage === 'home' && <HomeView onNavigate={navigateTo} />}
-        {currentPage === 'profil' && <ProfileBEI />}
-        {currentPage === 'kegiatan' && <RangkaianKegiatan />}
-        {currentPage === 'galeri' && <GaleriFoto />}
-        {currentPage === 'vlog' && <VideoVlog />}
-        {currentPage === 'refleksi' && <KesimpulanRefleksi />}
+        {currentPage === 'beranda' && <Beranda onNavigate={navigateTo} />}
+        {currentPage === 'materi' && <Materi />}
+        {currentPage === 'rangkaian' && <Rangkaian />}
+        {currentPage === 'galeri' && <Galeri />}
+        {currentPage === 'vlog' && <Vlog />}
+        {currentPage === 'kesimpulan' && <Kesimpulan />}
+        {currentPage === 'kuis' && <Kuis />}
       </main>
 
       <div className="dock-fixed-wrapper">
@@ -103,18 +131,17 @@ function App() {
             <img
               src={idxLogo}
               alt="Bursa Efek Indonesia"
-              style={{
-                height: 20,
-                width: 'auto',
-                display: 'block'
-              }}
+              fetchPriority="high"
+              loading="eager"
+              decoding="sync"
+              style={{ height: 20, width: 'auto', display: 'block' }}
             />
           }
           items={dockItems}
           position="top"
           theme="dark"
           baseItemSize={38}
-          magnification={54}
+          magnification={42}
           panelHeight={52}
           gap={6}
           distance={100}
