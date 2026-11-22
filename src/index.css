@@ -104,6 +104,4 @@ input, textarea, select {
   border-radius: 3px;
 }
 
-img, video, iframe {
-  filter: grayscale(100%) contrast(110%);
-}
+

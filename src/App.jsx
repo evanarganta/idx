@@ -28,6 +28,7 @@ function getPageFromPath() {
 
 function App() {
   const [currentPage, setCurrentPage] = useState(getPageFromPath);
+  const [vlogShowControls, setVlogShowControls] = useState(true);
 
   useEffect(() => {
     const onPopState = () => setCurrentPage(getPageFromPath());
@@ -90,7 +91,7 @@ function App() {
       active: currentPage === 'vlog',
       onClick: () => navigateTo('vlog'),
       menu: [
-        { label: 'Buka Vlog', onClick: () => navigateTo('vlog') }
+        { label: 'Putar Video Vlog', onClick: () => navigateTo('vlog') }
       ]
     },
     {
@@ -114,18 +115,18 @@ function App() {
   ];
 
   return (
-    <div className={`app-root has-top-dock${currentPage === 'beranda' ? ' is-home-page' : ''}${currentPage === 'rangkaian' ? ' is-rangkaian-page' : ''}${currentPage === 'galeri' ? ' is-galeri-page' : ''}`}>
+    <div className={`app-root has-top-dock${currentPage === 'beranda' ? ' is-home-page' : ''}${currentPage === 'rangkaian' ? ' is-rangkaian-page' : ''}${currentPage === 'galeri' ? ' is-galeri-page' : ''}${currentPage === 'vlog' ? ' is-vlog-page' : ''}`}>
       <main className="main-content">
         {currentPage === 'beranda' && <Beranda onNavigate={navigateTo} />}
         {currentPage === 'materi' && <Materi />}
         {currentPage === 'rangkaian' && <Rangkaian />}
         {currentPage === 'galeri' && <Galeri />}
-        {currentPage === 'vlog' && <Vlog />}
+        {currentPage === 'vlog' && <Vlog onControlsVisibilityChange={setVlogShowControls} />}
         {currentPage === 'kesimpulan' && <Kesimpulan />}
         {currentPage === 'kuis' && <Kuis />}
       </main>
 
-      <div className="dock-fixed-wrapper">
+      <div className={`dock-fixed-wrapper${currentPage === 'vlog' && !vlogShowControls ? ' dock-hidden' : ''}`}>
         <Dock
           logo={
             <img

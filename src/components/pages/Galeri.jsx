@@ -33,7 +33,9 @@ export default function Galeri() {
     <div className="galeri-root">
       <Masonry
         items={items}
-        columns={4}
+        columns="auto"
+        maxColumns={4}
+        columnWidth={190}
         gap={10}
         radius={10}
         animateFrom="none"

@@ -32,11 +32,12 @@ const aspectOf = (item, measured) => {
 };
 const needsMeasure = item => !((item.height ?? 0) > 0);
 
-const gridOf = (width, columns, columnWidth, gap) => {
+const gridOf = (width, columns, columnWidth, gap, maxColumns) => {
   const fixed = Number(columns);
-  const count = columns !== 'auto' && fixed > 0
+  let count = columns !== 'auto' && fixed > 0
     ? Math.max(1, Math.round(fixed))
     : Math.max(1, Math.floor((width + gap) / (Math.max(40, columnWidth) + gap)));
+  if (maxColumns && maxColumns > 0) count = Math.min(count, maxColumns);
   return { count, size: Math.max(1, (width - gap * (count - 1)) / count) };
 };
 
@@ -55,8 +56,8 @@ const place = (heights, item, grid, gap, measured, commit) => {
   return { x: Math.round(column * (size + gap)), y: Math.round(top), w, h };
 };
 
-const layoutOf = (list, width, columns, columnWidth, gap, measured) => {
-  const grid = gridOf(width, columns, columnWidth, gap);
+const layoutOf = (list, width, columns, columnWidth, gap, measured, maxColumns) => {
+  const grid = gridOf(width, columns, columnWidth, gap, maxColumns);
   const heights = new Array(grid.count).fill(0);
   const tiles = list.map(item => ({ item, id: keyOf(item), ...place(heights, item, grid, gap, measured, true) }));
   return { tiles, height: Math.max(0, Math.max(...heights) - gap) };
@@ -77,6 +78,7 @@ function IconRight() {
 const Masonry = ({
   items = [],
   columns = 'auto',
+  maxColumns,
   columnWidth = 240,
   gap = 12,
   radius = 12,
@@ -132,8 +134,8 @@ const Masonry = ({
   const itemsKey = items.map(keyOf).join('\0');
 
   const layout = useMemo(
-    () => (width && ready ? layoutOf(items, width, columns, columnWidth, settings.gap, measured) : null),
-    [items, width, ready, columns, columnWidth, settings.gap, measured]
+    () => (width && ready ? layoutOf(items, width, columns, columnWidth, settings.gap, measured, maxColumns) : null),
+    [items, width, ready, columns, columnWidth, settings.gap, measured, maxColumns]
   );
   const layoutRef = useRef(layout);
   layoutRef.current = layout;

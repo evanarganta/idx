@@ -27,6 +27,15 @@
   height: 72px;
   z-index: 990;
   pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dock-fixed-wrapper.dock-hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none !important;
 }
 
 .dock-fixed-wrapper .dock {
@@ -122,15 +131,41 @@
   display: block;
 }
 
-.info-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 2rem;
-  margin: auto;
-  margin-bottom: 2.5rem;
-  margin-top: .5rem;
+.kesimpulan-document {
+  position: relative;
   max-width: 50rem;
+  margin: 3rem auto 4.5rem;
+}
+
+.kesimpulan-document::before,
+.kesimpulan-document::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kesimpulan-document::before {
+  z-index: 0;
+  background-color: rgb(7,7,7);
+  transform: rotate(-2.2deg) translate(-4px, -3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.kesimpulan-document::after {
+  z-index: 1;
+  background-color: rgb(9,9,9);
+  transform: rotate(1.8deg) translate(3px, -4px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8);
+}
+
+.info-card {
+  position: relative;
+  z-index: 2;
+  background-color: rgb(11, 11, 11);
+  padding: 3.5rem;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.65);
+  transform: none;
 }
 
 .info-card p {
@@ -144,6 +179,7 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 1.25rem;
+  font-family: var(--font-keren);
 }
 
 
@@ -657,7 +693,8 @@
   justify-content: center;
 }
 
-.is-galeri-page {
+.is-galeri-page,
+.is-vlog-page {
   padding-top: 0 !important;
 }
 
@@ -666,8 +703,330 @@
   height: 100vh;
 }
 
+.is-vlog-page .main-content {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.vlog-root {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  overflow: hidden;
+  position: relative;
+}
+
+.vlog-root.is-idle {
+  cursor: none;
+}
+
+.vlog-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.vlog-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #000000;
+  display: block;
+  outline: none;
+  cursor: pointer;
+}
+
+.vlog-center-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(10, 12, 16, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  pointer-events: none;
+  z-index: 25;
+  animation: vlogCenterPop 0.45s ease-out forwards;
+}
+
+.vlog-bottom-hud {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translate(-50%, 12px);
+  width: calc(100% - 3rem);
+  max-width: 860px;
+  z-index: 30;
+  padding: 0.85rem 1.25rem;
+  background: rgba(10, 10, 10, 0.82);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.vlog-bottom-hud.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.vlog-scrubber-container {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.vlog-scrubber-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  transition: height 0.15s ease;
+}
+
+.vlog-scrubber-container:hover .vlog-scrubber-track {
+  height: 6px;
+}
+
+.vlog-scrubber-buffered {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 2px;
+}
+
+.vlog-scrubber-played {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-gold, #c5a059);
+  border-radius: 2px;
+}
+
+.vlog-scrubber-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.8);
+  pointer-events: none;
+  transition: width 0.15s ease, height 0.15s ease;
+}
+
+.vlog-scrubber-container:hover .vlog-scrubber-thumb {
+  width: 14px;
+  height: 14px;
+}
+
+.vlog-scrubber-tooltip {
+  position: absolute;
+  bottom: 22px;
+  transform: translateX(-50%);
+  background: rgba(10, 12, 16, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.vlog-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vlog-controls-left,
+.vlog-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.vlog-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.82);
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.vlog-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.vlog-btn:active {
+  transform: scale(0.95);
+}
+
+.vlog-btn-play {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.vlog-btn-play:hover {
+  background: var(--accent-gold, #c5a059);
+  color: #000000;
+}
+
+.vlog-time-readout {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+.vlog-speed-btn {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vlog-speed-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.vlog-volume-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.vlog-volume-slider {
+  width: 0;
+  opacity: 0;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  transition: width 0.2s ease, opacity 0.2s ease;
+}
+
+.vlog-volume-group:hover .vlog-volume-slider,
+.vlog-volume-slider:focus {
+  width: 65px;
+  opacity: 1;
+}
+
+.vlog-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-gold, #c5a059);
+  cursor: pointer;
+}
+
+.vlog-volume-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-gold, #c5a059);
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes vlogCenterPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes vlogPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 640px) {
+  .vlog-bottom-hud {
+    bottom: 1rem;
+    width: calc(100% - 1.5rem);
+    padding: 0.65rem 0.85rem;
+    border-radius: 14px;
+  }
+  .vlog-time-readout {
+    font-size: 0.72rem;
+  }
+}
+
 .galeri-root {
-  padding: 1rem 1rem 84px;
+  padding: 1rem;
   width: 100%;
   box-sizing: border-box;
 }

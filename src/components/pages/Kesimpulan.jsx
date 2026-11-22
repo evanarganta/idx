@@ -3,7 +3,8 @@ import React from 'react';
 export default function Kesimpulan() {
   return (
     <div className="broadsheet-root">
-      <div className="info-card">
+      <div className="kesimpulan-document">
+        <div className="info-card">
         <div className="group-heading">
           Kesimpulan dan Refleksi
         </div>
@@ -97,6 +98,7 @@ export default function Kesimpulan() {
           keuangan dan membentuk pola pikir yang lebih bijak dalam mengelola
           keuangan pribadi di masa mendatang.
         </p>
+        </div>
       </div>
     </div>
   );

@@ -93,3 +93,80 @@ export function PencilIcon(props) {
     </BaseSvg>
   );
 }
+
+export function PlayIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <polygon points="6 3 20 12 6 21 6 3" fill="currentColor" stroke="none" />
+    </BaseSvg>
+  );
+}
+
+export function PauseIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none" />
+      <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none" />
+    </BaseSvg>
+  );
+}
+
+export function VolumeHighIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </BaseSvg>
+  );
+}
+
+export function VolumeMuteIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </BaseSvg>
+  );
+}
+
+export function MaximizeIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <polyline points="15 3 21 3 21 9" />
+      <polyline points="9 21 3 21 3 15" />
+      <line x1="21" y1="3" x2="14" y2="10" />
+      <line x1="3" y1="21" x2="10" y2="14" />
+    </BaseSvg>
+  );
+}
+
+export function MinimizeIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <polyline points="4 14 10 14 10 20" />
+      <polyline points="20 10 14 10 14 4" />
+      <line x1="14" y1="10" x2="21" y2="3" />
+      <line x1="3" y1="21" x2="10" y2="14" />
+    </BaseSvg>
+  );
+}
+
+export function RotateCcwIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </BaseSvg>
+  );
+}
+
+export function RotateCwIcon(props) {
+  return (
+    <BaseSvg {...props}>
+      <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+    </BaseSvg>
+  );
+}
