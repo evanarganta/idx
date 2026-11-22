@@ -1,10 +1,10 @@
 ### https://evan-arganta-idx.vercel.app
 
-<sup>view the website here</sup>
+<sup>visit the website here!</sup>
 
 -----
 
-**TRACK LISTING**
+**PAGES**
 
 1. Home
 2. Materials
@@ -19,3 +19,4 @@
 - **Concept:** Evan Arganta
 - **Design:** Evan Arganta
 - **Development:** Evan Arganta
+- **Evan Arganta:** Evan Arganta
