@@ -18,10 +18,8 @@ function IconRight() {
 }
 
 const VISIBLE_COUNT = 5;
-const RADIUS_X = 360;
-const RADIUS_Y = 70;
 
-function getItemPosition(index, activeIndex, total) {
+function getItemPosition(index, activeIndex, total, rx, ry) {
   const offset = index - activeIndex;
   const half = Math.floor(VISIBLE_COUNT / 2);
   let adj = offset;
@@ -30,8 +28,8 @@ function getItemPosition(index, activeIndex, total) {
   if (Math.abs(adj) > half * 2) return null;
 
   const angle = (adj / VISIBLE_COUNT) * Math.PI;
-  const x = Math.sin(angle) * RADIUS_X;
-  const y = -Math.cos(angle) * RADIUS_Y;
+  const x = Math.sin(angle) * rx;
+  const y = -Math.cos(angle) * ry;
   const distance = Math.abs(adj);
   const maxDistance = half + 1;
   const scale = Math.max(0, 1 - (distance / maxDistance) * 0.3);
@@ -43,8 +41,22 @@ function getItemPosition(index, activeIndex, total) {
 export default function CircularCarousel({ items, autoPlayInterval = 5000 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [trackWidth, setTrackWidth] = useState(1000);
   const containerRef = useRef(null);
   const total = items.length;
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setTrackWidth(el.offsetWidth || window.innerWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const rx = trackWidth < 640 ? Math.min(100, trackWidth * 0.22) : 360;
+  const ry = trackWidth < 640 ? 25 : 70;
 
   const goTo = useCallback(
     (i) => setActiveIndex(((i % total) + total) % total),
@@ -80,7 +92,7 @@ export default function CircularCarousel({ items, autoPlayInterval = 5000 }) {
       <div className="circ-track">
         <AnimatePresence mode="popLayout">
           {items.map((item, i) => {
-            const pos = getItemPosition(i, activeIndex, total);
+            const pos = getItemPosition(i, activeIndex, total, rx, ry);
             if (!pos) return null;
             const isActive = i === activeIndex;
             return (

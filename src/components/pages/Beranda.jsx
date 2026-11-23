@@ -1,5 +1,5 @@
 import React from 'react';
-import newHeroImg from '../../assets/newhero.png';
+import newHeroImg from '../../assets/hero.webp';
 
 export default function Beranda() {
   return (

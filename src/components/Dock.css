@@ -505,6 +505,22 @@
   background: var(--dock-menu-separator);
 }
 
+@media (max-width: 640px) {
+  .dock {
+    max-width: calc(100vw - 12px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 3px 6px;
+    gap: 3px;
+    top: 10px;
+  }
+  .dock::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dock,
   .dock[data-hidden],
