@@ -62,11 +62,13 @@ body {
   width: 100%;
   max-width: 100vw;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
