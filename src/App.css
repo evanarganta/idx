@@ -53,6 +53,7 @@
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 
@@ -410,17 +411,17 @@
   width: 100%;
   max-width: 100%;
   padding: 0.5rem 0 1rem;
-  padding-top: 2rem;
-  overflow: hidden;
+  padding-top: 1.5rem;
+  overflow: visible;
   box-sizing: border-box;
 }
 
 .circ-track {
   position: relative;
-  height: 160px;
+  height: 240px;
   width: 100%;
   max-width: 1000px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .circ-section-label {
@@ -436,7 +437,7 @@
 .circ-card {
   position: absolute;
   left: 50%;
-  top: 60%;
+  top: 50%;
   translate: -50% -50%;
   display: flex;
   flex-direction: column;
@@ -1435,7 +1436,8 @@
   }
 
   .circ-track {
-    height: 160px;
+    height: 210px;
+    overflow: visible;
   }
 
   .circ-card {
@@ -1562,7 +1564,8 @@
   }
 
   .circ-track {
-    height: 155px;
+    height: 195px;
+    overflow: visible;
   }
 
   .circ-card {

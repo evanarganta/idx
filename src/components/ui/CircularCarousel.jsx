@@ -56,7 +56,7 @@ export default function CircularCarousel({ items, autoPlayInterval = 5000 }) {
   }, []);
 
   const rx = trackWidth < 640 ? Math.min(100, trackWidth * 0.22) : 360;
-  const ry = trackWidth < 640 ? 25 : 70;
+  const ry = trackWidth < 640 ? 20 : 45;
 
   const goTo = useCallback(
     (i) => setActiveIndex(((i % total) + total) % total),
