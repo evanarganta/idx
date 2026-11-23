@@ -51,66 +51,42 @@ function App() {
       label: 'Beranda',
       active: currentPage === 'beranda',
       onClick: () => navigateTo('beranda'),
-      menu: [
-        { label: 'Buka Beranda', onClick: () => navigateTo('beranda') },
-        { separator: true },
-        { label: 'Data Peneliti Siswa', onClick: () => navigateTo('beranda') }
-      ]
     },
     {
       icon: <BuildingIcon size={16} />,
       label: 'Materi',
       active: currentPage === 'materi',
       onClick: () => navigateTo('materi'),
-      menu: [
-        { label: 'Struktur Kelembagaan SRO', onClick: () => navigateTo('materi') },
-        { label: 'Sejarah Pasar Modal (1912 - Kini)', onClick: () => navigateTo('materi') }
-      ]
     },
     {
       icon: <CalendarIcon size={16} />,
       label: 'Rangkaian',
       active: currentPage === 'rangkaian',
       onClick: () => navigateTo('rangkaian'),
-      menu: [
-        { label: 'Jadwal Kunjungan Industri', onClick: () => navigateTo('rangkaian') }
-      ]
     },
     {
       icon: <ImageIcon size={16} />,
       label: 'Galeri',
       active: currentPage === 'galeri',
       onClick: () => navigateTo('galeri'),
-      menu: [
-        { label: 'Buka 12 Foto Dokumentasi', onClick: () => navigateTo('galeri') }
-      ]
     },
     {
       icon: <VideoIcon size={16} />,
       label: 'Vlog',
       active: currentPage === 'vlog',
       onClick: () => navigateTo('vlog'),
-      menu: [
-        { label: 'Putar Video Vlog', onClick: () => navigateTo('vlog') }
-      ]
     },
     {
       icon: <FileTextIcon size={16} />,
       label: 'Kesimpulan',
       active: currentPage === 'kesimpulan',
       onClick: () => navigateTo('kesimpulan'),
-      menu: [
-        { label: 'Rangkuman Materi Kunjungan', onClick: () => navigateTo('kesimpulan') }
-      ]
     },
     {
       icon: <PencilIcon size={16} />,
       label: 'Kuis',
       active: currentPage === 'kuis',
       onClick: () => navigateTo('kuis'),
-      menu: [
-        { label: 'Kuis Evaluasi 5 Soal', onClick: () => navigateTo('kuis') }
-      ]
     }
   ];
 

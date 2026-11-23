@@ -305,6 +305,37 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+.tile-featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  background-size: 200% 100%;
+  animation: tile-skeleton 1.5s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.tile-featured:has(.featured-portrait-img[data-loaded])::before {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes tile-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 .featured-portrait-img {
   position: absolute;
   inset: 0;
@@ -312,6 +343,13 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.featured-portrait-img[data-loaded] {
+  opacity: 1;
 }
 
 .featured-sheen-overlay {

@@ -26,6 +26,10 @@ export default function Materi() {
                   src={ceoImg}
                   alt="Edukasi OJK"
                   className="featured-portrait-img"
+                  onLoad={(e) => e.currentTarget.setAttribute('data-loaded', '')}
+                  ref={(img) => {
+                    if (img?.complete && img.naturalWidth) img.setAttribute('data-loaded', '');
+                  }}
                 />
                 <div className="featured-sheen-overlay" />
               </div>
