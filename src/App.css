@@ -1463,12 +1463,12 @@
   }
 
   .is-rangkaian-page .timeline-wrapper {
-    padding: 1.25rem 1.25rem;
+    padding: 1.25rem 1rem;
     box-sizing: border-box;
   }
 
   .timeline-row {
-    grid-template-columns: 85px 24px 1fr;
+    grid-template-columns: max-content 24px 1fr;
     min-height: 80px;
   }
 
@@ -1477,7 +1477,7 @@
   }
 
   .timeline-right {
-    padding: 0 0.5rem 1.5rem 0.5rem;
+    padding: 0 0 1.5rem 0.5rem;
   }
 
   .timeline-jam {
@@ -1578,11 +1578,11 @@
   }
 
   .is-rangkaian-page .timeline-wrapper {
-    padding: 1rem 1.25rem;
+    padding: 1rem 1rem;
   }
 
   .timeline-row {
-    grid-template-columns: 75px 20px 1fr;
+    grid-template-columns: max-content 20px 1fr;
   }
 
   .timeline-jam {
